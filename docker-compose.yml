@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  node-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - AI_SERVICE_URL=http://ai-service:8000
+    depends_on:
+      - ai-service
+    restart: always
+    volumes:
+      - ./api:/usr/src/app
+
+  ai-service:
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - ./ai:/usr/src/ai
