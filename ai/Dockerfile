@@ -1,18 +1,20 @@
-# Use the latest Python version
+# Use the official Python 3.13 image
 FROM python:3.13.0
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /usr/src/ai
 
-# Copy requirements and install dependencies
-COPY requirements.txt ./
+# Copy the requirements.txt file to the container
+COPY requirements.txt .
+
+# Install the dependencies listed in the requirements.txt file
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code
+# Copy the application source code to the container
 COPY ./app ./app
 
-# Expose port
+# Expose port 8000 for the Flask app
 EXPOSE 8000
 
-# Start the Flask app
+# Run Flask app directly, no need to use `flask run` since we call `app.run()` in `main.py`
 CMD ["python", "app/main.py"]

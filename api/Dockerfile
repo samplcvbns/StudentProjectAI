@@ -4,18 +4,17 @@ FROM node:22.11.0
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and install dependencies
-COPY package.json ./ 
-RUN npm install
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-# Install nodemon globally for development purposes
-RUN npm install -g nodemon
+# Install dependencies
+RUN npm install
 
 # Copy application source code
 COPY ./src ./src
 
-# Expose port
+# Expose the port
 EXPOSE 5000
 
-# Use nodemon to start the server for development
-CMD ["nodemon", "src/server.js"]
+# Run the development script with nodemon
+CMD ["npm", "run", "dev"]
