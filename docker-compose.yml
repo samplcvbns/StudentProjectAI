@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   node-api:
     build:
@@ -7,14 +8,12 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - AI_SERVICE_URL=http://ai-service:8000
-    depends_on:
-      - ai-service
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./api:/usr/src/app
-      - /usr/src/app/node_modules # Exclude node_modules from the host to container sync
-    command: nodemon src/server.js
+      - /usr/src/app/node_modules # Exclude node_modules to prevent issues
     restart: always
+    command: npm run dev
 
   ai-service:
     build:
@@ -22,7 +21,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_ENV=development
     volumes:
       - ./ai:/usr/src/ai
-    command: python app/main.py
     restart: always
+    command: python app/main.py
