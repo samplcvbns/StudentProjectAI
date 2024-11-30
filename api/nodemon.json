@@ -1,0 +1,9 @@
+{
+  "watch": ["src", "app.js", "server.js", "index.js"],
+  "ext": "js,json",
+  "exec": "node --inspect-brk=0.0.0.0:9229 app.js",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ignore": ["node_modules"]
+}
