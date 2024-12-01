@@ -2,7 +2,6 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import {
   signup,
-  allUsers,
   verifyAccount,
   login,
   refreshToken,
@@ -10,6 +9,8 @@ import {
   forgotPassword,
   resetPassword,
   sendVerificationEmail,
+  allUsers,
+  deleteUser,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -35,7 +36,6 @@ const verifyToken = (req, res, next) => {
 
 // Routes
 router.post("/signup", signup);
-router.get("/all-users", allUsers);
 router.post("/login", login);
 router.post("/refresh-token", refreshToken);
 router.get("/user/me", verifyToken, getCurrentUser);
@@ -43,5 +43,7 @@ router.get("/verify-account", verifyAccount);
 router.post("/verify-email", sendVerificationEmail);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.get("/all-users", allUsers);
+router.delete("/delete-user/:id", deleteUser);
 
 export default router;
