@@ -54,6 +54,7 @@ export const signup = async (req, res) => {
 
     res.status(201).json({
       message: "Signup successful. Check your email to verify your account.",
+      verificationToken,
     });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
