@@ -1,0 +1,17 @@
+# Signup request to create a new user
+POST http://localhost:5000/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Simeon",
+  "email": "chinedusimeon2020@gmail.com",
+  "password": "123456"
+}
+
+###
+
+# Expected Response Example (for reference)
+{
+  "message": "Signup successful. Check your email to verify your account.",
+  "verificationToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGNjOTJhNzNiNmYwNDVkYjI1YjlkNiIsImlhdCI6MTczMzA4NTQ4MiwiZXhwIjoxNzMzMTcxODgyfQ.OmMQSxHeDV9upvxCp5m58LSRNadgx69cEZ9ZgYEzVcg"
+}
