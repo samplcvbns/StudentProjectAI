@@ -1,19 +1,23 @@
-version: "3.8"
-
 services:
   node-api:
     build:
       context: ./api
       dockerfile: Dockerfile
+    env_file:
+      - ./api/.env
     ports:
       - "5000:5000"
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./api:/usr/src/app
-      - /usr/src/app/node_modules # Exclude node_modules to prevent issues
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
     restart: always
     command: npm run dev
+    networks:
+      - app-network
 
   ai-service:
     build:
@@ -28,3 +32,24 @@ services:
       - ./ai:/usr/src/ai
     restart: always
     command: python app/main.py
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./api/mongod.conf:/etc/mongo/mongod.conf  # Mount the mongod.conf from the api directory
+      - mongo-data:/data/db
+    restart: always
+    command: ["mongod", "--config", "/etc/mongo/mongod.conf"]  # Ensure it uses the new config
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
