@@ -14,5 +14,3 @@ curl -X GET http://localhost:5000/api/auth/all-users
 
 curl -X DELETE http://localhost:5000/api/auth/delete-user/:id
 
-
-miseopnfheyyjapz
