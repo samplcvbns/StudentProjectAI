@@ -179,7 +179,7 @@ export const forgotPassword = async (req, res) => {
     await sendEmailForForgotPassword(email, resetLink);
     res
       .status(200)
-      .json({ message: "Password reset link sent to your email." });
+      .json({ message: "Password reset link sent to your email.", resetToken });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
