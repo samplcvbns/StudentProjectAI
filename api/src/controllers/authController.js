@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import User from "../models/userModel.js";
 import { transporter } from "../utils/emailTransporterUtil.js";
 import { sendEmailToVerify } from "../services/emailService.js";
+import { generateToken } from "../utils/generateTokenUtil.js";
 
 // const transporter = nodemailer.createTransport({
 //   service: "Gmail", // You can use other services like Outlook, Yahoo, etc.
@@ -14,12 +15,7 @@ import { sendEmailToVerify } from "../services/emailService.js";
 // });
 
 // Utility function to generate JWT with expiration and issuer
-// const generateToken = (id) => {
-//   return jwt.sign({ id }, process.env.JWT_SECRET, {
-//     expiresIn: "6h",
-//     issuer: "studentprojectai",
-//   });
-// };
+
 
 // Signup controller
 export const signup = async (req, res) => {
