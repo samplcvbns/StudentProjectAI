@@ -9,16 +9,6 @@ import {
 } from "../services/emailService.js";
 import { generateToken } from "../utils/generateTokenUtil.js";
 
-// const transporter = nodemailer.createTransport({
-//   service: "Gmail", // You can use other services like Outlook, Yahoo, etc.
-//   auth: {
-//     user: "chinedusimeon2020@gmail.com", // Your Gmail address
-//     pass: "", // Your email password or app password
-//   },
-// });
-
-// Utility function to generate JWT with expiration and issuer
-
 // Signup controller
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
