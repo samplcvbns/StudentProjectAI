@@ -15,7 +15,7 @@ const nodemonConfig = JSON.parse(fs.readFileSync(nodemonConfigPath, "utf-8"));
 
 const app = express();
 const PORT = 5000;
-const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:8000";
+// const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:8000";
 
 app.use(express.json());
 
@@ -33,7 +33,7 @@ connection.catch((err) => {
 app.use("/api/auth", authRoute);
 app.get("/", async (req, res) => {
   try {
-    const aiResponse = await axios.get(`${AI_SERVICE_URL}/ai`);
+    const aiResponse = await axios.get('http://ai-service:8000/ai');
     res.json({ message: "Hello from Node AI!", aiResponse: aiResponse.data });
   } catch (error) {
     res.status(500).json({ error: "Failed to connect to AI service" });

@@ -14,6 +14,7 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - mongo
+      - ai-service
     restart: always
     command: npm run dev
     networks:
