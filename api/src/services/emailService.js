@@ -64,3 +64,26 @@ export const sendEmailToVerify = async (name, email, verificationLink) => {
 `,
   });
 };
+
+export const sendEmailForForgotPassword = async (email, resetLink) => {
+  await transporter.sendMail({
+    from: "chinedusimeon2020@gmail.com",
+    to: email,
+    subject: "Reset Your Password",
+    html: `
+        <div style="font-family: Arial, sans-serif; text-align: center;">
+          <h1>Password Reset Request</h1>
+          <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
+          <a href="${resetLink}" style="
+            display: inline-block;
+            background-color: #1c80df;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+          ">Reset Password</a>
+          <p>If you did not request this, please ignore this email.</p>
+        </div>
+      `,
+  });
+};
