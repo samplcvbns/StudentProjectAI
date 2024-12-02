@@ -3,7 +3,10 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import User from "../models/userModel.js";
 import { transporter } from "../utils/emailTransporterUtil.js";
-import { sendEmailToVerify } from "../services/emailService.js";
+import {
+  sendEmailForForgotPassword,
+  sendEmailToVerify,
+} from "../services/emailService.js";
 import { generateToken } from "../utils/generateTokenUtil.js";
 
 // const transporter = nodemailer.createTransport({
@@ -15,7 +18,6 @@ import { generateToken } from "../utils/generateTokenUtil.js";
 // });
 
 // Utility function to generate JWT with expiration and issuer
-
 
 // Signup controller
 export const signup = async (req, res) => {
@@ -174,27 +176,7 @@ export const forgotPassword = async (req, res) => {
     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     // Send reset email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Reset Your Password",
-      html: `
-        <div style="font-family: Arial, sans-serif; text-align: center;">
-          <h1>Password Reset Request</h1>
-          <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
-          <a href="${resetLink}" style="
-            display: inline-block;
-            background-color: #1c80df;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-          ">Reset Password</a>
-          <p>If you did not request this, please ignore this email.</p>
-        </div>
-      `,
-    });
-
+    await sendEmailForForgotPassword(email, resetLink);
     res
       .status(200)
       .json({ message: "Password reset link sent to your email." });

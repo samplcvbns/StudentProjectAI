@@ -1,5 +1,4 @@
 import express from "express";
-import jwt from "jsonwebtoken";
 import {
   signup,
   verifyAccount,
@@ -15,8 +14,6 @@ import {
 import { verifyToken } from "../middlewares/verifyTokenMiddleware.js";
 
 const router = express.Router();
-
-// Middleware to verify token
 
 // Routes
 router.post("/signup", signup);
