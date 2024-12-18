@@ -1,2 +1,15 @@
 flask
 Flask-CORS
+fastapi
+uvicorn
+spacy
+nltk
+gensim
+transformers
+torch
+scikit-learn
+pypdf2
+pdfplumber
+pytesseract
+opencv-python
+pytest
