@@ -4,6 +4,7 @@ fastapi
 uvicorn
 spacy
 nltk
+numpy
 gensim
 transformers
 torch
@@ -13,3 +14,9 @@ pdfplumber
 pytesseract
 opencv-python
 pytest
+sentence-transformers 
+accelerate
+beautifulsoup4
+requests
+fpdf
+python-docx
