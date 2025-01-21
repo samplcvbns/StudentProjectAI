@@ -1,0 +1,8 @@
+curl -X POST http://localhost:5000/api/files/upload-file \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@/C:/Users/Simeon/OneDrive/Documents/100L VOTERS REGISTRATION (Responses).pdf"
+
+###
+curl -X POST http://localhost:5000/api/files/upload-file \
+  -F "file=@C:/Users/Simeon/Downloads/PEE 500 LEVEL-20241112T052129Z-001/PEE 500 LEVEL/First Semester/PEE531/C.pdf"
+
