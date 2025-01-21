@@ -17,6 +17,7 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
+api/src/config/firebaseConfig.json
 
 # Editor directories and files
 .vscode/*
