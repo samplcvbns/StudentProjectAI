@@ -1,20 +1,20 @@
 # Use the latest Node.js version
-FROM node:22.11.0
+FROM node:22.11.0 AS builder
 
-# Set working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
-
 # Install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy application source code
 COPY ./src ./src
 
-# Expose the port
-EXPOSE 5000
+# Production image
+FROM node:22.11.0
 
-# Run the development script with nodemon
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app ./
+
+EXPOSE 5000
 CMD ["npm", "run", "dev"]
