@@ -7,7 +7,6 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const fileFilter = (req, file, cb) => {
   const allowedExtensions = /\.(jpeg|jpg|png|gif|pdf|doc|docx|pptx)$/i;
   if (allowedExtensions.test(file.originalname)) {
@@ -17,10 +16,8 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-
-
 // Define the destination folder
-const UPLOADS_FOLDER = path.join(__dirname, '../uploads');
+const UPLOADS_FOLDER = path.join(__dirname, "../uploads");
 
 // Ensure the uploads folder exists, or create it
 if (!fs.existsSync(UPLOADS_FOLDER)) {
@@ -33,10 +30,35 @@ const storage = multer.diskStorage({
     cb(null, UPLOADS_FOLDER); // Save files to the uploads folder
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Generate a unique filename
+    cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename
   },
 });
 
- const upload = multer({ storage, fileFilter });
- 
- export default upload
+const upload = multer({ storage, fileFilter });
+
+// Function to delete old files
+const deleteOldFiles = () => {
+  const expiryTime = 60 * 60 * 1000; // 1 hour (in milliseconds)
+  fs.readdir(UPLOADS_FOLDER, (err, files) => {
+    if (err) return console.error("Error reading uploads folder:", err);
+
+    files.forEach((file) => {
+      const filePath = path.join(UPLOADS_FOLDER, file);
+      fs.stat(filePath, (err, stats) => {
+        if (err) return console.error("Error getting file stats:", err);
+
+        if (Date.now() - stats.mtimeMs > expiryTime) {
+          fs.unlink(filePath, (err) => {
+            if (err) console.error("Error deleting file:", err);
+            else console.log(`Deleted old file: ${file}`);
+          });
+        }
+      });
+    });
+  });
+};
+
+// Run file cleanup every 10 minutes
+setInterval(deleteOldFiles, 10 * 60 * 1000);
+
+export default upload;
