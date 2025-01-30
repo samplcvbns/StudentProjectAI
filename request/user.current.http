@@ -1,3 +1,0 @@
-GET http://localhost:5000/api/auth/user/me
-Accept: */*
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGNjNjVlNzNiNmYwNDVkYjI1YjljOSIsImlhdCI6MTczMzEzNjkxMiwiZXhwIjoxNzMzMTU4NTEyLCJpc3MiOiJzdHVkZW50cHJvamVjdGFpIn0.2XtHhxf7P5rigjZGavoI4LxT-05-2KV9cITnsQzcvPM
