@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const fileSchema = new mongoose.Schema({
   filename: String,
   url: String,
+  iv: String,
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
