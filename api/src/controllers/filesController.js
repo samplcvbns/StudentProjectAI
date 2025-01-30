@@ -1,31 +1,13 @@
-import { Client, Storage } from "node-appwrite";
+import { createClient } from "@supabase/supabase-js";
 import File from "../models/fileModel.js";
-import path from "path";
-import { fileURLToPath } from "url";
 import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
-// To resolve __dirname in ES module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 
-const APP_WRITE_PROJECT_ID = process.env.APP_WRITE_PROJECT_ID;
-const APP_WRITE_API_KEY = process.env.APP_WRITE_API_KEY;
-const APP_WRITE_ENDPOINT = process.env.APP_WRITE_ENDPOINT;
-const APP_WRITE_BUCKET_ID = process.env.APP_WRITE_BUCKET_ID;
-console.log(
-  APP_WRITE_PROJECT_ID,
-  APP_WRITE_API_KEY,
-  APP_WRITE_ENDPOINT,
-  APP_WRITE_BUCKET_ID
-);
-
-// Initialize Appwrite Client
-const client = new Client()
-  .setEndpoint(APP_WRITE_ENDPOINT) // Replace with your Appwrite endpoint
-  .setProject(APP_WRITE_PROJECT_ID) // Replace with your project ID
-  .setKey(APP_WRITE_API_KEY); // Replace with your API key
-
-const storage = new Storage(client);
+const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
 export const uploadFile = async (req, res) => {
   try {
@@ -34,39 +16,47 @@ export const uploadFile = async (req, res) => {
       return res.status(400).send({ message: "No file uploaded" });
     }
 
-    console.log("File received:", file);
+    // Read file as binary buffer
+    const fileBuffer = fs.readFileSync(file.path);
+    
+    // Upload to Supabase storage bucket
+    const { data, error } = await supabase.storage
+      .from("student-project-ai")
+      .upload(`pdf/${file.originalname}`, fileBuffer, {
+        contentType: "application/pdf",
+        cacheControl: "3600",
+        upsert: true,
+        contentEncoding: "identity",
+      });
 
-    // Use fs.createReadStream for the file path
-    const fileStream = fs.createReadStream(file.path);
+    if (error) {
+      console.error("Upload error:", error.message);
+      throw new Error(error.message);
+    }
 
-    // Upload file to Appwrite storage
-    const uploadedFile = await storage.createFile(
-      APP_WRITE_BUCKET_ID, // Replace with your storage bucket ID
-      "unique()", // Unique ID for the file
-      fileStream, // Stream the file
-      file.originalname // Set original file name (optional)
-    );
+    // Generate a signed public URL
+    const { data: publicUrl, error: urlError } = supabase.storage
+      .from("student-project-ai")
+      .getPublicUrl(`pdf/${file.originalname}`);
 
-    console.log("Uploaded file details:", uploadedFile);
-
-    // Generate a public URL for the uploaded file
-    const fileUrl = `${APP_WRITE_ENDPOINT}/storage/buckets/${uploadFile.APP_WRITE_BUCKET_ID}/files/${uploadedFile.$id}/view?project=${APP_WRITE_PROJECT_ID}`;
+    if (urlError) {
+      console.error("Error generating public URL:", urlError.message);
+      throw new Error(urlError.message);
+    }
 
     // Save file details in MongoDB
     const newFile = new File({
       filename: file.originalname,
-      url: fileUrl,
+      url: publicUrl.publicUrl,
     });
-
     await newFile.save();
 
-    // Send response
     res.status(200).send({
       message: "File uploaded successfully",
-      fileUrl: fileUrl,
+      fileUrl: publicUrl.publicUrl,
     });
   } catch (error) {
     console.error("Error uploading file:", error);
-    res.status(500).send({ message: error });
+    res.status(500).send({ message: error.message });
   }
 };
