@@ -1,0 +1,1 @@
+GET http://localhost:5000/api/auth/verify-account?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGNjNjVlNzNiNmYwNDVkYjI1YjljOSIsImlhdCI6MTczMzE3OTg4OSwiZXhwIjoxNzMzMjY2Mjg5fQ.5h7m0VNL4JAU-sq7QSlHKzoOMccNn4imZc8m1-2kSEY

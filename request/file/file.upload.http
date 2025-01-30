@@ -1,0 +1,4 @@
+curl -X POST http://localhost:5000/api/files/upload-file \
+  -H "Content-Type: multipart/form-data" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -F "file=@C:/Users/Simeon/Downloads/PEE 500 LEVEL-20241112T052129Z-001/PEE 500 LEVEL/First Semester/PEE531/C.pdf"
