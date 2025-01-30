@@ -45,7 +45,7 @@ const deleteOldFiles = () => {
     files.forEach((file) => {
       const filePath = path.join(UPLOADS_FOLDER, file);
       fs.stat(filePath, (err, stats) => {
-        if (err) return console.error("Error getting file stats:", err);
+        if (err) return console.error("Error getting f1ile stats:", err);
 
         if (Date.now() - stats.mtimeMs > expiryTime) {
           fs.unlink(filePath, (err) => {
@@ -59,6 +59,6 @@ const deleteOldFiles = () => {
 };
 
 // Run file cleanup every 10 minutes
-setInterval(deleteOldFiles, 10 * 60 * 1000);
+setInterval(deleteOldFiles, 1 * 60 * 1000);
 
 export default upload;
