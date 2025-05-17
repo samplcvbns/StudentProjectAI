@@ -8,7 +8,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_USEPOLLING=false
     volumes:
       - ./api:/usr/src/app
     depends_on:
@@ -53,3 +53,27 @@ volumes:
 networks:
   app-network:
     driver: bridge
+
+
+services:
+  ai-app:
+    build:
+      context: ./ai 
+    container_name: ai_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ai/generated_docs:/usr/src/ai/generated_docs  # Mounts the host's generated_docs folder to the container
+    environment:
+      - FLASK_APP=ai/app/main.py
+      - FLASK_ENV=development
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge
+
+volumes:
+  generated_docs:
+    driver: local
